@@ -23,6 +23,20 @@
                 <label>Email: </label>
                 <input type="email" th:field="*{email}">
             </div>
+            <div th:object="${userDetails}">
+                <div>
+                    <label>Name: </label>
+                    <input type="text" th:field="*{name}">
+                </div>
+                <div>
+                    <label>Surname: </label>
+                    <input type="text" th:field="*{surname}">
+                </div>
+                <div>
+                    <label>Age: </label>
+                    <input type="number" th:field="*{age}">
+                </div>
+            </div>
             <div>
                 <input type="submit" value="Sing Up">
             </div>

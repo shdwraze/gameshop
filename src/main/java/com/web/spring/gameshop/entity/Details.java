@@ -18,7 +18,7 @@ public class Details {
     @Column(name = "user_login")
     private String login;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @MapsId
     @JoinColumn(name = "user_login")
     @JsonBackReference
