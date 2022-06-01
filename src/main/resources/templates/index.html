@@ -9,11 +9,18 @@
 <body>
     <h1>START PAGE</h1>
     <div sec:authorize="isAuthenticated()">
-        <span th:text="${#authentication.getPrincipal().getUsername()}"></span>
-
-        <form th:action="@{/logout}" method="post">
-            <input type="submit" value="Sing Out">
-        </form>
+        <p><span th:text="${#authentication.getPrincipal().getUsername()}"></span></p>
+        <div>
+            <form th:action="@{/logout}" method="post">
+                <input type="submit" value="Sing Out">
+            </form>
+        </div>
+        <br>
+        <div>
+            <form th:action="@{/info}" method="get">
+                <input type="submit" value="Information">
+            </form>
+        </div>
     </div>
     <div sec:authorize="isAnonymous()">
         <form th:action="@{/login}" method="get">

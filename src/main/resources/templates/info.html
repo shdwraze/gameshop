@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>User Information</title>
+</head>
+<body>
+
+<div th:object="${user}">
+    <h1>User Information</h1>
+
+    <div>
+        <p>Login: <span th:text="${user.login}"></span></p>
+        <p>Email: <span th:text="${user.email}"></span></p>
+    </div>
+
+    <div th:object="${userInfo}">
+        <p>Name: <span th:text="${userInfo.name}"></span></p>
+        <p>Surname: <span th:text="${userInfo.surname}"></span></p>
+        <p>Age: <span th:text="${userInfo.age}"></span></p>
+    </div>
+
+    <div>
+        <form th:action="@{/}">
+            <input type="submit" value="Back">
+        </form>
+    </div>
+    <br>
+    <div>
+        <form th:action="@{/info/edit}" method="get">
+            <input type="submit" value="Edit">
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

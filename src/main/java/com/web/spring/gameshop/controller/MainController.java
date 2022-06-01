@@ -8,8 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.security.Principal;
 
 @Controller
 public class MainController {
@@ -48,5 +52,45 @@ public class MainController {
         userRepository.save(user);
 
         return "redirect:/";
+    }
+
+    @GetMapping("/info")
+    public String getUserInfo(Principal principal, Model userDetailsModel, Model userModel) {
+        User user = userRepository.findByLogin(principal.getName());
+        Details details = user.getDetails();
+        userDetailsModel.addAttribute("userInfo", details);
+        userModel.addAttribute("user", user);
+
+        return "info";
+    }
+
+    @GetMapping("/info/edit")
+    public String getEditPage(Principal principal, Model userDetailsModel, Model userModel) {
+        User user = userRepository.findByLogin(principal.getName());
+        Details details = user.getDetails();
+        userDetailsModel.addAttribute("userDetails", details);
+        userModel.addAttribute("user", user);
+
+        return "edit";
+    }
+
+    @PostMapping("/info/edit")
+    public String updateUser(Principal principal, Details details, User user) {
+        User u = userRepository.findByLogin(principal.getName());
+        u.getDetails().setName(details.getName());
+        u.getDetails().setSurname(details.getSurname());
+        u.getDetails().setAge(details.getAge());
+
+//        u.setLogin(user.getLogin());
+        u.setEmail(user.getEmail());
+
+        userRepository.save(u);
+
+        return "redirect:/info";
+    }
+
+    @GetMapping("/games")
+    public String getAllGames() {
+        return "games";
     }
 }
