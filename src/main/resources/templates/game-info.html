@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Game info</title>
+</head>
+<body>
+
+<div>
+    <h1><span th:text="*{game.name}"></span></h1>
+    <p>Release date: <span th:text="*{game.release}"></span></p>
+    <p>Developer: <span th:text="*{game.developer.name}"></span></p>
+    <p>Publisher: <span th:text="*{game.publisher.name}"></span></p>
+    <br>
+    <p>Description: <span th:text="*{game.description}"></span></p>
+    <br>
+    <p>Price: <span th:text="*{game.price}"></span></p>
+
+    <form th:action="@{/games}">
+        <input type="submit" value="Назад">
+    </form>
+</div>
+
+</body>
+</html>

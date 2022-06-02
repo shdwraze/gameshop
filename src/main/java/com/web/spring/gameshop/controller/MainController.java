@@ -1,8 +1,10 @@
 package com.web.spring.gameshop.controller;
 
 import com.web.spring.gameshop.entity.Details;
+import com.web.spring.gameshop.entity.Game;
 import com.web.spring.gameshop.entity.Role;
 import com.web.spring.gameshop.entity.User;
+import com.web.spring.gameshop.repository.GameRepository;
 import com.web.spring.gameshop.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,15 +13,19 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 public class MainController {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private GameRepository gameRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -80,8 +86,6 @@ public class MainController {
         u.getDetails().setName(details.getName());
         u.getDetails().setSurname(details.getSurname());
         u.getDetails().setAge(details.getAge());
-
-//        u.setLogin(user.getLogin());
         u.setEmail(user.getEmail());
 
         userRepository.save(u);
@@ -90,7 +94,20 @@ public class MainController {
     }
 
     @GetMapping("/games")
-    public String getAllGames() {
+    public String getAllGames(Model model) {
+        List<Game> games = gameRepository.findAll();
+        model.addAttribute("games", games);
+
         return "games";
+    }
+
+    @GetMapping("/games/{id}")
+    public String getGameInfo(@PathVariable int id, Model model) {
+        Game game = gameRepository.findById(id);
+        model.addAttribute("game", game);
+        model.addAttribute("gameGenres", game.getGenres());
+        model.addAttribute("gamePlatforms", game.getPlatforms());
+
+        return "game-info";
     }
 }

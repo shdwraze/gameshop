@@ -10,15 +10,17 @@
     <h1>START PAGE</h1>
     <div sec:authorize="isAuthenticated()">
         <p><span th:text="${#authentication.getPrincipal().getUsername()}"></span></p>
-        <div>
+        <div class="container-buttons">
             <form th:action="@{/logout}" method="post">
-                <input type="submit" value="Sing Out">
+                <input type="submit" value="Выход">
             </form>
-        </div>
-        <br>
-        <div>
+            <br>
             <form th:action="@{/info}" method="get">
-                <input type="submit" value="Information">
+                <input type="submit" value="Информация">
+            </form>
+            <br>
+            <form th:action="@{/games}" method="get">
+                <input type="submit" value="Игры">
             </form>
         </div>
     </div>
