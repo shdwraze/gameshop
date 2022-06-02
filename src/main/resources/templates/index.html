@@ -1,16 +1,33 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Index</title>
 </head>
 <body>
-    <h1>Hello</h1>
-
-    <form th:action="@{/logout}" method="post">
-        <input type="submit" value="Sign Out"/>
-    </form>
+    <h1>START PAGE</h1>
+    <div sec:authorize="isAuthenticated()">
+        <p><span th:text="${#authentication.getPrincipal().getUsername()}"></span></p>
+        <div class="container-buttons">
+            <form th:action="@{/info}" method="get">
+                <input type="submit" value="Personal Area">
+            </form>
+            <br>
+            <form th:action="@{/games}" method="get">
+                <input type="submit" value="Games">
+            </form>
+            <br>
+            <form th:action="@{/logout}" method="post">
+                <input type="submit" value="Sing Out">
+            </form>
+        </div>
+    </div>
+    <div sec:authorize="isAnonymous()">
+        <form th:action="@{/login}" method="get">
+            <input type="submit" value="Log in">
+        </form>
+    </div>
 </body>
 </html>
