@@ -19,9 +19,18 @@
         <td>
             <a th:href="@{/games/{id}(id=${game.id})}" th:text="*{game.name}"></a>
         </td>
-        <td th:text="*{game.price}"></td>
+        <td>
+            <label th:text="*{game.price}"></label> $
+        </td>
     </tr>
 </table>
+
+
+<div>
+    <form th:action="@{/}">
+        <input type="submit" value="Back">
+    </form>
+</div>
 
 </body>
 </html>

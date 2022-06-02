@@ -11,16 +11,16 @@
     <div sec:authorize="isAuthenticated()">
         <p><span th:text="${#authentication.getPrincipal().getUsername()}"></span></p>
         <div class="container-buttons">
-            <form th:action="@{/logout}" method="post">
-                <input type="submit" value="Выход">
-            </form>
-            <br>
             <form th:action="@{/info}" method="get">
-                <input type="submit" value="Информация">
+                <input type="submit" value="Personal Area">
             </form>
             <br>
             <form th:action="@{/games}" method="get">
-                <input type="submit" value="Игры">
+                <input type="submit" value="Games">
+            </form>
+            <br>
+            <form th:action="@{/logout}" method="post">
+                <input type="submit" value="Sing Out">
             </form>
         </div>
     </div>

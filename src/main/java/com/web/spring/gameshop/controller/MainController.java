@@ -1,18 +1,13 @@
 package com.web.spring.gameshop.controller;
 
-import com.web.spring.gameshop.entity.Details;
-import com.web.spring.gameshop.entity.Game;
-import com.web.spring.gameshop.entity.Role;
-import com.web.spring.gameshop.entity.User;
+import com.web.spring.gameshop.entity.*;
 import com.web.spring.gameshop.repository.GameRepository;
 import com.web.spring.gameshop.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -61,21 +56,23 @@ public class MainController {
     }
 
     @GetMapping("/info")
-    public String getUserInfo(Principal principal, Model userDetailsModel, Model userModel) {
+    public String getUserInfo(Principal principal, Model model) {
         User user = userRepository.findByLogin(principal.getName());
         Details details = user.getDetails();
-        userDetailsModel.addAttribute("userInfo", details);
-        userModel.addAttribute("user", user);
+        List<Order> orders = user.getOrders();
+        model.addAttribute("userInfo", details);
+        model.addAttribute("user", user);
+        model.addAttribute("userOrders", orders);
 
         return "info";
     }
 
     @GetMapping("/info/edit")
-    public String getEditPage(Principal principal, Model userDetailsModel, Model userModel) {
+    public String getEditPage(Principal principal, Model model) {
         User user = userRepository.findByLogin(principal.getName());
         Details details = user.getDetails();
-        userDetailsModel.addAttribute("userDetails", details);
-        userModel.addAttribute("user", user);
+        model.addAttribute("userDetails", details);
+        model.addAttribute("user", user);
 
         return "edit";
     }
@@ -107,6 +104,7 @@ public class MainController {
         model.addAttribute("game", game);
         model.addAttribute("gameGenres", game.getGenres());
         model.addAttribute("gamePlatforms", game.getPlatforms());
+        model.addAttribute("sys", game.getSystemRequirements());
 
         return "game-info";
     }
