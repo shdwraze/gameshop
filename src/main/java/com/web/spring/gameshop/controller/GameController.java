@@ -57,8 +57,6 @@ public class GameController {
             }
         }
 
-        System.out.println(isBought);
-
         model.addAttribute("game", game);
         model.addAttribute("gameGenres", game.getGenres());
         model.addAttribute("gamePlatforms", game.getPlatforms());
