@@ -39,6 +39,10 @@
     </p>
     <p><b>Price:</b> <label><span th:text="*{game.price}"></span> $</label></p>
 
+    <form th:action="@{/games/{id}(id=${game.id})}" method="post">
+        <input type="submit" value="Buy">
+    </form>
+    <br>
     <form th:action="@{/games}">
         <input type="submit" value="Back">
     </form>

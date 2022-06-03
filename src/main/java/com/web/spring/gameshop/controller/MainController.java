@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -107,5 +108,42 @@ public class MainController {
         model.addAttribute("sys", game.getSystemRequirements());
 
         return "game-info";
+    }
+
+    @PostMapping("/games/{id}")
+    public String buyGame(@PathVariable int id, Principal principal) {
+        User user = userRepository.findByLogin(principal.getName());
+        List<Order> orders = user.getOrders();
+        Order order;
+
+        if (orders.isEmpty()) {
+            order = new Order();
+            List<Game> games = new ArrayList<>();
+
+            order.setGames(games);
+            order.setUser(user);
+            order.setStatus(Status.NOT_PAID);
+            orders.add(order);
+        } else {
+            order = orders.get(orders.size() - 1);
+        }
+
+        if (order.getStatus() != Status.PAID) {
+            List<Game> games = order.getGames();
+            games.add(gameRepository.findById(id));
+        } else {
+            Order newOrder = new Order();
+            List<Game> games = new ArrayList<>();
+            games.add(gameRepository.findById(id));
+
+            newOrder.setGames(games);
+            newOrder.setUser(user);
+            newOrder.setStatus(Status.NOT_PAID);
+            orders.add(newOrder);
+        }
+
+        userRepository.save(user);
+
+        return "redirect:/info";
     }
 }
