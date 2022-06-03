@@ -41,6 +41,10 @@
                 <td>
                     <span th:each="game : ${order.games}">
                         <span th:text="${game.name}"></span>
+                        <form th:if="${order.status.name() == 'NOT_PAID'}"
+                              th:action="@{/info/delete/{id}(id=${game.id})}" method="post">
+                            <input type="submit" value="Delete">
+                        </form>
                         <br>
                     </span>
                 </td>

@@ -32,17 +32,18 @@
         <b>System requirements:</b>
         <ul>
             <li>Processor: <span th:text="${sys.processor}"></span></li>
-            <li>Videocard: <span th:text="${sys.videocard}"></span></li>
+            <li>Video card: <span th:text="${sys.videocard}"></span></li>
             <li>Disk space: <span th:text="${sys.diskSize}"></span> GB</li>
             <li>RAM size: <span th:text="${sys.ramSize}"></span> GB</li>
         </ul>
     </p>
     <p><b>Price:</b> <label><span th:text="*{game.price}"></span> $</label></p>
 
-    <form th:action="@{/games/{id}(id=${game.id})}" method="post">
+    <form th:if="${isBought == false}" th:action="@{/games/{id}(id=${game.id})}" method="post">
         <input type="submit" value="Buy">
     </form>
     <br>
+    <h3 th:if="${isBought == true}">You already bought this game</h3>
     <form th:action="@{/games}">
         <input type="submit" value="Back">
     </form>
