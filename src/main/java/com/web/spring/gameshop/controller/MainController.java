@@ -1,14 +1,12 @@
 package com.web.spring.gameshop.controller;
 
 import com.web.spring.gameshop.entity.*;
-import com.web.spring.gameshop.repository.GameRepository;
 import com.web.spring.gameshop.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.security.Principal;
@@ -19,8 +17,6 @@ public class MainController {
 
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private GameRepository gameRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -55,57 +51,31 @@ public class MainController {
         return "redirect:/";
     }
 
-    @GetMapping("/info")
-    public String getUserInfo(Principal principal, Model model) {
+    @GetMapping("/pay")
+    public String payment(Principal principal, Model model) {
         User user = userRepository.findByLogin(principal.getName());
-        Details details = user.getDetails();
         List<Order> orders = user.getOrders();
-        model.addAttribute("userInfo", details);
-        model.addAttribute("user", user);
-        model.addAttribute("userOrders", orders);
+        Order order = orders.get(orders.size() - 1);
 
-        return "info";
+        int sum = 0;
+        for (Game game : order.getGames()) {
+            sum += game.getPrice();
+        }
+
+        model.addAttribute("order", order);
+        model.addAttribute("sum", sum);
+
+        return "payment";
     }
 
-    @GetMapping("/info/edit")
-    public String getEditPage(Principal principal, Model model) {
+    @PostMapping("/pay")
+    public String successPayment(Principal principal) {
         User user = userRepository.findByLogin(principal.getName());
-        Details details = user.getDetails();
-        model.addAttribute("userDetails", details);
-        model.addAttribute("user", user);
-
-        return "edit";
-    }
-
-    @PostMapping("/info/edit")
-    public String updateUser(Principal principal, Details details, User user) {
-        User u = userRepository.findByLogin(principal.getName());
-        u.getDetails().setName(details.getName());
-        u.getDetails().setSurname(details.getSurname());
-        u.getDetails().setAge(details.getAge());
-        u.setEmail(user.getEmail());
-
-        userRepository.save(u);
+        List<Order> orders = user.getOrders();
+        Order order = orders.get(orders.size() - 1);
+        order.setStatus(Status.PAID);
+        userRepository.save(user);
 
         return "redirect:/info";
-    }
-
-    @GetMapping("/games")
-    public String getAllGames(Model model) {
-        List<Game> games = gameRepository.findAll();
-        model.addAttribute("games", games);
-
-        return "games";
-    }
-
-    @GetMapping("/games/{id}")
-    public String getGameInfo(@PathVariable int id, Model model) {
-        Game game = gameRepository.findById(id);
-        model.addAttribute("game", game);
-        model.addAttribute("gameGenres", game.getGenres());
-        model.addAttribute("gamePlatforms", game.getPlatforms());
-        model.addAttribute("sys", game.getSystemRequirements());
-
-        return "game-info";
     }
 }

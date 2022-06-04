@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment</title>
+</head>
+<body>
+
+    <div th:object="${order}">
+        <h2>CHECK ALL DATA!</h2>
+
+        <p><b>Order ID: </b><label th:text="${order.id}"></label></p>
+        <p><b>Content: </b>
+            <ul th:each="game : ${order.games}">
+                <li th:text="${game.name}"></li>
+            </ul>
+        </p>
+        <p><b>User login: </b><label th:text="${order.user.login}"></label></p>
+        <br>
+        <p><b>Amount payable: </b><label th:text="${sum}"></label></p>
+
+        <form th:action="@{/pay}" method="post">
+            <input type="submit" value="Pay">
+        </form>
+        <br>
+        <form th:action="@{/info}" method="get">
+            <input type="submit" value="Cancel">
+        </form>
+
+    </div>
+
+</body>
+</html>
