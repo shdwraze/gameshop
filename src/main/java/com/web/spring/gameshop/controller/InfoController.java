@@ -1,13 +1,10 @@
 package com.web.spring.gameshop.controller;
 
-import com.web.spring.gameshop.entity.Details;
-import com.web.spring.gameshop.entity.Game;
-import com.web.spring.gameshop.entity.Order;
-import com.web.spring.gameshop.entity.User;
+import com.web.spring.gameshop.entity.*;
 import com.web.spring.gameshop.repository.GameRepository;
+import com.web.spring.gameshop.repository.OrderRepository;
 import com.web.spring.gameshop.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +22,8 @@ public class InfoController {
     private UserRepository userRepository;
     @Autowired
     private GameRepository gameRepository;
+    @Autowired
+    private OrderRepository orderRepository;
 
 
     @GetMapping({"/", ""})
@@ -32,9 +31,24 @@ public class InfoController {
         User user = userRepository.findByLogin(principal.getName());
         Details details = user.getDetails();
         List<Order> orders = user.getOrders();
+        int sum = 0;
+
+        if (!orders.isEmpty()) {
+            Order order = orders.get(orders.size() - 1);
+
+            if (order.getStatus() == Status.NOT_PAID) {
+                List<Game> games = order.getGames();
+
+                for (Game game : games) {
+                    sum += game.getPrice();
+                }
+            }
+        }
+
         model.addAttribute("userInfo", details);
         model.addAttribute("user", user);
         model.addAttribute("userOrders", orders);
+        model.addAttribute("sum", sum);
 
         return "info";
     }
@@ -71,6 +85,11 @@ public class InfoController {
         List<Game> games = order.getGames();
 
         games.remove(currentGame);
+        if (games.isEmpty()) {
+            int orderID = order.getId();
+            orders.remove(order);
+            orderRepository.deleteById(orderID);
+        }
 
         userRepository.save(user);
 

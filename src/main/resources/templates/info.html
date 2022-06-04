@@ -48,14 +48,20 @@
                         <br>
                     </span>
                 </td>
-                <td>
+                <td align="center">
                     <span th:if="${order.status.name() == 'PAID'}">Paid</span>
-                    <span th:if="${order.status.name() == 'NOT_PAID'}">Not paid</span>
+                    <span th:if="${order.status.name() == 'NOT_PAID'}">
+                        Not paid
+                        <br>
+                        Amount payable: <label th:text="${sum}"></label>
+                        <form th:action="@{/pay}" method="get">
+                            <input type="submit" value="Pay">
+                        </form>
+                    </span>
                 </td>
             </tr>
         </table>
     </div>
-
     <br>
     <div>
         <form th:action="@{/}">

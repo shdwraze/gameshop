@@ -1,9 +1,6 @@
 package com.web.spring.gameshop.controller;
 
-import com.web.spring.gameshop.entity.Details;
-import com.web.spring.gameshop.entity.Role;
-import com.web.spring.gameshop.entity.User;
-import com.web.spring.gameshop.repository.GameRepository;
+import com.web.spring.gameshop.entity.*;
 import com.web.spring.gameshop.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -12,13 +9,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.security.Principal;
+import java.util.List;
+
 @Controller
 public class MainController {
 
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private GameRepository gameRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -51,5 +49,33 @@ public class MainController {
         userRepository.save(user);
 
         return "redirect:/";
+    }
+
+    @GetMapping("/pay")
+    public String payment(Principal principal, Model model) {
+        User user = userRepository.findByLogin(principal.getName());
+        List<Order> orders = user.getOrders();
+        Order order = orders.get(orders.size() - 1);
+
+        int sum = 0;
+        for (Game game : order.getGames()) {
+            sum += game.getPrice();
+        }
+
+        model.addAttribute("order", order);
+        model.addAttribute("sum", sum);
+
+        return "payment";
+    }
+
+    @PostMapping("/pay")
+    public String successPayment(Principal principal) {
+        User user = userRepository.findByLogin(principal.getName());
+        List<Order> orders = user.getOrders();
+        Order order = orders.get(orders.size() - 1);
+        order.setStatus(Status.PAID);
+        userRepository.save(user);
+
+        return "redirect:/info";
     }
 }
