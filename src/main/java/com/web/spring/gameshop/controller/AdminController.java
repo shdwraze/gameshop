@@ -33,12 +33,6 @@ public class AdminController {
 
     @GetMapping({"", "/"})
     public String showAdminPanel() {
-        Developer developer = developerRepository.findById(2);
-        List<Game> games = developer.getGames();
-        for (Game game : games) {
-            System.out.println(game.getName());
-        }
-
         return "admin";
     }
 
@@ -47,7 +41,7 @@ public class AdminController {
         List<Game> games = gameRepository.findAll();
         model.addAttribute("games", games);
 
-        return "game-management";
+        return "admin-game-management";
     }
 
     @GetMapping("/games/edit/{id}")
@@ -57,6 +51,8 @@ public class AdminController {
 
         List<Developer> developers = developerRepository.findAll();
         List<Publisher> publishers = publisherRepository.findAll();
+        List<Genre> genres = genresRepository.findAll();
+        List<Platform> platforms = platformsRepository.findAll();
 
         model.addAttribute("game", game);
         model.addAttribute("sys", requirements);
@@ -65,8 +61,10 @@ public class AdminController {
 
         model.addAttribute("developers", developers);
         model.addAttribute("publishers", publishers);
+        model.addAttribute("genres", genres);
+        model.addAttribute("platforms", platforms);
 
-        return "game-edit";
+        return "admin-game-edit";
     }
 
     @PostMapping("/games/edit/{id}")
@@ -79,6 +77,8 @@ public class AdminController {
         g.setRelease(game.getRelease());
         g.setDescription(game.getDescription());
         g.setPrice(game.getPrice());
+        g.setGenres(game.getGenres());
+        g.setPlatforms(game.getPlatforms());
         g.setDeveloper(developer);
         g.setPublisher(publisher);
 

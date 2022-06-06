@@ -36,6 +36,25 @@
                             th:text="${publ.name}"></option>
                 </select>
             </p>
+            <p>
+                Genres:
+                <ul>
+                    <li th:each="genre : ${genres}">
+                        <input type="checkbox" th:field="*{genres}"
+                               th:text="${genre.name}" th:value="${genre.id}">
+                    </li>
+                </ul>
+            </p>
+            <p>
+                Platforms:
+            <ul>
+                <li th:each="platform : ${platforms}">
+                    <input type="checkbox" th:field="*{platforms}"
+                           th:text="${platform.name}" th:value="${platform.id}">
+                </li>
+            </ul>
+            </p>
+
             <p>Price: <label>
                 <input type="text" th:field="*{price}">
             </label></p>
