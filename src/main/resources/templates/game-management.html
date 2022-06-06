@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Game management</title>
+</head>
+<body>
+
+<h1>Game management</h1>
+
+<form th:action="@{/admin/add}" method="get">
+    <input type="submit" value="Add new game">
+</form>
+
+<div th:object="${games}">
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>NAME</th>
+            <th>DESCRIPTION</th>
+            <th>RELEASE</th>
+            <th>DEVELOPER / PUBLISHER</th>
+            <th>PRICE</th>
+            <th>ACTION</th>
+        </tr>
+        <tr th:each="game : ${games}">
+            <td th:text="${game.id}"></td>
+            <td th:text="${game.name}"></td>
+            <td th:text="${game.description}"></td>
+            <td th:text="${game.release}"></td>
+            <td th:text="${game.developer.name + ' / ' + game.publisher.name}"></td>
+            <td><span th:text="${game.price}"></span> $</td>
+            <td>
+                <form th:action="@{/admin/games/edit/{id}(id=${game.id})}" method="get">
+                    <input type="submit" value="EDIT">
+                </form>
+                <br>
+                <form th:action="@{/admin/games/delete/{id}(id=${game.id})}" method="post">
+                    <input type="submit" value="DELETE">
+                </form>
+            </td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>

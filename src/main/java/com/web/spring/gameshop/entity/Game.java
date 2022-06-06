@@ -11,6 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class Game {
@@ -23,7 +24,7 @@ public class Game {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "release")
+    @Column(name = "release_date")
     private Date release;
 
     @Column(name = "description")

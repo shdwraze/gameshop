@@ -1,5 +1,6 @@
 package com.web.spring.gameshop.config;
 
+import com.web.spring.gameshop.entity.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -19,7 +20,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
+        http.csrf().disable().authorizeRequests()
+                .antMatchers("/admin/**").hasAuthority(Role.ADMIN.getAuthority())
                 .antMatchers("/", "/register").permitAll()
                 .anyRequest().authenticated()
                 .and()
