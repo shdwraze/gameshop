@@ -1,13 +1,7 @@
 package com.web.spring.gameshop.controller;
 
-import com.web.spring.gameshop.entity.Developer;
-import com.web.spring.gameshop.entity.Game;
-import com.web.spring.gameshop.entity.Publisher;
-import com.web.spring.gameshop.entity.SystemRequirements;
-import com.web.spring.gameshop.repository.DeveloperRepository;
-import com.web.spring.gameshop.repository.GameRepository;
-import com.web.spring.gameshop.repository.PublisherRepository;
-import com.web.spring.gameshop.repository.UserRepository;
+import com.web.spring.gameshop.entity.*;
+import com.web.spring.gameshop.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,6 +24,12 @@ public class AdminController {
 
     @Autowired
     private PublisherRepository publisherRepository;
+
+    @Autowired
+    private GenresRepository genresRepository;
+
+    @Autowired
+    private PlatformsRepository platformsRepository;
 
     @GetMapping({"", "/"})
     public String showAdminPanel() {
@@ -81,6 +81,7 @@ public class AdminController {
         g.setPrice(game.getPrice());
         g.setDeveloper(developer);
         g.setPublisher(publisher);
+
         g.getSystemRequirements().setProcessor(requirements.getProcessor());
         g.getSystemRequirements().setVideocard(requirements.getVideocard());
         g.getSystemRequirements().setDiskSize(requirements.getDiskSize());
@@ -102,18 +103,24 @@ public class AdminController {
         SystemRequirements requirements = new SystemRequirements();
         List<Developer> developers = developerRepository.findAll();
         List<Publisher> publishers = publisherRepository.findAll();
+        List<Genre> genres = genresRepository.findAll();
+        List<Platform> platforms = platformsRepository.findAll();
 
         model.addAttribute("game", game);
         model.addAttribute("sys", requirements);
         model.addAttribute("developers", developers);
         model.addAttribute("publishers", publishers);
+        model.addAttribute("genres", genres);
+        model.addAttribute("platforms", platforms);
 
         return "admin-add-game";
     }
 
     @PostMapping("/add")
-    public String saveNewGame(@RequestParam(name = "dev", required = true) String devName,
-                              @RequestParam(name = "publ", required = true) String publName,
+    public String saveNewGame(@RequestParam(name = "dev") String devName,
+                              @RequestParam(name = "publ") String publName,
+                              @RequestParam(name = "genreChecked") List<Genre> genres,
+                              @RequestParam(name = "platformChecked") List<Platform> platforms,
                               Game game,
                               SystemRequirements requirements) {
         Developer developer = developerRepository.findByName(devName);
@@ -121,6 +128,8 @@ public class AdminController {
 
         game.setDeveloper(developer);
         game.setPublisher(publisher);
+        game.setGenres(genres);
+        game.setPlatforms(platforms);
         game.setSystemRequirements(requirements);
         requirements.setGame(game);
 

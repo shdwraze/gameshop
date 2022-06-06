@@ -28,6 +28,7 @@
             <p>
                 <label>Developer: </label>
                 <select id="dev" name="dev">
+                    <option value="" disabled>Select developer</option>
                     <option th:each="dev : ${developers}"
                             th:value="${dev.name}"
                             th:text="${dev.name}"></option>
@@ -40,6 +41,24 @@
                             th:value="${publ.name}"
                             th:text="${publ.name}"></option>
                 </select>
+            </p>
+            <p>
+                <label>Genre: </label>
+                <ul>
+                    <li th:each="genre : ${genres}">
+                        <input type="checkbox" th:name="genreChecked"
+                               th:text="${genre.name}" th:value="${genre.id}"/>
+                    </li>
+                </ul>
+            </p>
+            <p>
+                <label>Platforms: </label>
+            <ul>
+                <li th:each="platform : ${platforms}">
+                    <input type="checkbox" th:name="platformChecked"
+                           th:text="${platform.name}" th:value="${platform.id}"/>
+                </li>
+            </ul>
             </p>
             <p>
                 <label>Price: </label>
