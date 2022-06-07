@@ -14,9 +14,6 @@ import java.util.List;
 public class AdminController {
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     private GameRepository gameRepository;
 
     @Autowired
@@ -33,7 +30,7 @@ public class AdminController {
 
     @GetMapping({"", "/"})
     public String showAdminPanel() {
-        return "admin";
+        return "admin/admin";
     }
 
     @GetMapping("/games")
@@ -41,7 +38,7 @@ public class AdminController {
         List<Game> games = gameRepository.findAll();
         model.addAttribute("games", games);
 
-        return "admin-game-management";
+        return "admin/admin-game-management";
     }
 
     @GetMapping("/games/edit/{id}")
@@ -64,7 +61,7 @@ public class AdminController {
         model.addAttribute("genres", genres);
         model.addAttribute("platforms", platforms);
 
-        return "admin-game-edit";
+        return "admin/admin-game-edit";
     }
 
     @PostMapping("/games/edit/{id}")
@@ -113,7 +110,7 @@ public class AdminController {
         model.addAttribute("genres", genres);
         model.addAttribute("platforms", platforms);
 
-        return "admin-add-game";
+        return "admin/admin-add-game";
     }
 
     @PostMapping("/add")
@@ -144,4 +141,73 @@ public class AdminController {
 
         return "redirect:/admin/games";
     }
+
+    @GetMapping("/genres")
+    public String showGenresManagement(Model model) {
+        List<Genre> genres = genresRepository.findAll();
+        Genre genre = new Genre();
+        model.addAttribute("genres", genres);
+        model.addAttribute("genre", genre);
+
+        return "admin/admin-genres";
+    }
+
+    @PostMapping("/genres")
+    public String createGenre(Genre genre) {
+        genresRepository.save(genre);
+
+        return "redirect:/admin/genres";
+    }
+
+    @GetMapping("/platforms")
+    public String showPlatformsManagement(Model model) {
+        List<Platform> platforms = platformsRepository.findAll();
+        Platform platform = new Platform();
+        model.addAttribute("platforms", platforms);
+        model.addAttribute("platform", platform);
+
+        return "admin/admin-platforms";
+    }
+
+    @PostMapping("/platforms")
+    public String createPlatform(Platform platform) {
+        platformsRepository.save(platform);
+
+        return "redirect:/admin/platforms";
+    }
+
+    @GetMapping("/developers")
+    public String showDevelopersManagement(Model model) {
+        List<Developer> developers = developerRepository.findAll();
+        Developer developer = new Developer();
+        model.addAttribute("developers", developers);
+        model.addAttribute("developer", developer);
+
+        return "admin/admin-developers";
+    }
+
+    @PostMapping("/developers")
+    public String createDeveloper(Developer developer) {
+        developerRepository.save(developer);
+
+        return "redirect:/admin/developers";
+    }
+
+    @GetMapping("/publishers")
+    public String showPublishersManagement(Model model) {
+        List<Publisher> publishers = publisherRepository.findAll();
+        Publisher publisher = new Publisher();
+        model.addAttribute("publishers", publishers);
+        model.addAttribute("publisher", publisher);
+
+        return "admin/admin-publishers";
+    }
+
+    @PostMapping("/publishers")
+    public String createPlatform(Publisher publisher) {
+        publisherRepository.save(publisher);
+
+        return "redirect:/admin/publishers";
+    }
+
 }

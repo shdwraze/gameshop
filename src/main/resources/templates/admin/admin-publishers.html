@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="UTF-8">
+  <title>PUBLISHERS</title>
+</head>
+<body>
+
+<table border="1">
+  <tr>
+    <th>ID</th>
+    <th>NAME</th>
+    <th>COUNTRY</th>
+    <th>FOUNDING YEAR</th>
+  </tr>
+  <tr th:each="publisher : ${publishers}">
+    <td th:text="${publisher.id}"></td>
+    <td th:text="${publisher.name}"></td>
+    <td th:text="${publisher.country}"></td>
+    <td th:text="${publisher.foundingYear}"></td>
+  </tr>
+</table>
+<br>
+<form th:action="@{/admin/publishers}" th:object="${publisher}" method="post">
+  <label>Name: </label>
+  <input type="text" th:field="*{name}">
+  <br><br>
+  <label>Country: </label>
+  <input type="text" th:field="*{country}">
+  <br><br>
+  <label>Founding Year: </label>
+  <input type="number" th:field="*{foundingYear}">
+  <br><br>
+  <input type="submit" value="Create">
+</form>
+</body>
+</html>
