@@ -11,6 +11,10 @@
     <div sec:authorize="isAuthenticated()">
         <p><span th:text="${#authentication.getPrincipal().getUsername()}"></span></p>
         <div class="container-buttons">
+            <form th:action="@{/admin}" method="get" sec:authorize="hasAuthority('ADMIN')">
+                <input type="submit" value="Admin panel">
+            </form>
+            <br>
             <form th:action="@{/info}" method="get">
                 <input type="submit" value="Personal Area">
             </form>

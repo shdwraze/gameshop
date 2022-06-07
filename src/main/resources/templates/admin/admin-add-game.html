@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>ADD NEW GAME</title>
+</head>
+<body>
+
+<h1>ADD NEW GAME</h1>
+
+<div>
+    <form th:action="@{/admin/add}" method="post">
+        <div>
+            <p>
+                <label>Name: </label>
+                <input type="text" th:field="*{game.name}">
+            </p>
+            <p>
+                <label>Release: </label>
+                <input type="date" th:field="*{game.release}">
+            </p>
+            <p>
+                <label>Description: </label>
+                <input type="text" th:field="*{game.description}">
+            </p>
+            <p>
+                <label>Developer: </label>
+                <select id="dev" name="dev">
+                    <option value="" disabled>Select developer</option>
+                    <option th:each="dev : ${developers}"
+                            th:value="${dev.name}"
+                            th:text="${dev.name}"></option>
+                </select>
+            </p>
+            <p>
+                <label>Publisher: </label>
+                <select id="publ" name="publ">
+                    <option th:each="publ : ${publishers}"
+                            th:value="${publ.name}"
+                            th:text="${publ.name}"></option>
+                </select>
+            </p>
+            <p>
+                <label>Genre: </label>
+                <ul>
+                    <li th:each="genre : ${genres}">
+                        <input type="checkbox" th:name="genreChecked"
+                               th:text="${genre.name}" th:value="${genre.id}"/>
+                    </li>
+                </ul>
+            </p>
+            <p>
+                <label>Platforms: </label>
+            <ul>
+                <li th:each="platform : ${platforms}">
+                    <input type="checkbox" th:name="platformChecked"
+                           th:text="${platform.name}" th:value="${platform.id}"/>
+                </li>
+            </ul>
+            </p>
+            <p>
+                <label>Price: </label>
+                <input type="number" th:field="*{game.price}">
+            </p>
+        </div>
+        <h3>System requirements</h3>
+        <div th:object="${sys}">
+            <p>
+                <label>Processor: </label>
+                <input type="text" th:field="*{processor}">
+            </p>
+            <p>
+                <label>Video card: </label>
+                <input type="text" th:field="*{videocard}">
+            </p>
+            <p>
+                <label>Disk space: </label>
+                <span><input type="number" th:field="*{diskSize}"> GB</span>
+            </p>
+            <p>
+                <label>RAM size: </label>
+                <span><input type="number" th:field="*{ramSize}"> GB</span>
+            </p>
+        </div>
+        <div>
+            <input type="submit" value="Add">
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

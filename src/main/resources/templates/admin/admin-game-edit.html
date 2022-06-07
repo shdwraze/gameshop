@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>GAME EDIT</title>
+</head>
+<body>
+
+<div>
+    <form th:action="@{/admin/games/edit/{id}(id=${game.id})}" method="post">
+        <div th:object="${game}">
+            <p>Name: <label>
+                <input type="text" th:field="*{name}">
+            </label></p>
+            <p>Release: <label>
+                <input type="date" th:field="*{release}">
+            </label></p>
+            <p>Description: <label>
+                <input type="text" th:field="*{description}">
+            </label></p>
+            <p>
+                Developer:
+                <select th:field="*{developer.name}">
+                    <option th:each="dev : ${developers}"
+                            th:value="${dev.name}"
+                            th:text="${dev.name}"></option>
+                </select>
+            </p>
+            <p>
+                Publisher:
+                <select th:field="*{publisher.name}">
+                    <option th:each="publ : ${publishers}"
+                            th:value="${publ.name}"
+                            th:text="${publ.name}"></option>
+                </select>
+            </p>
+            <p>
+                Genres:
+                <ul>
+                    <li th:each="genre : ${genres}">
+                        <input type="checkbox" th:field="*{genres}"
+                               th:text="${genre.name}" th:value="${genre.id}">
+                    </li>
+                </ul>
+            </p>
+            <p>
+                Platforms:
+            <ul>
+                <li th:each="platform : ${platforms}">
+                    <input type="checkbox" th:field="*{platforms}"
+                           th:text="${platform.name}" th:value="${platform.id}">
+                </li>
+            </ul>
+            </p>
+
+            <p>Price: <label>
+                <input type="text" th:field="*{price}">
+            </label></p>
+        </div>
+        <h3>System requirements</h3>
+        <table th:object="${sys}" style="border: black">
+            <p>Processor: <label>
+                <input type="text" th:field="*{processor}">
+            </label></p>
+            <p>Video card: <label>
+                <input type="text" th:field="*{videocard}">
+            </label></p>
+            <p>Disk space: <label>
+                <span><input type="number" th:field="*{diskSize}"> GB</span>
+            </label></p>
+            <p>RAM size: <label>
+                <span><input type="number" th:field="*{ramSize}"> GB</span>
+            </label></p>
+        </table>
+
+        <input type="submit" value="Save">
+    </form>
+
+</div>
+
+</body>
+</html>

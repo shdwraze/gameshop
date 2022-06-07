@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin panel</title>
+</head>
+<body>
+
+<h1>ADMIN PANEL</h1>
+<h3>Welcome, <span style="color: coral" th:text="${#authentication.getPrincipal().getUsername()}"></span></h3>
+
+<form th:action="@{/admin/games}" method="get">
+    <input type="submit" value="Game management">
+</form>
+<br>
+<form th:action="@{/admin/genres}">
+    <input type="submit" value="Genres management">
+</form>
+<br>
+<form th:action="@{/admin/developers}">
+    <input type="submit" value="Developers management">
+</form>
+<br>
+<form th:action="@{/admin/publishers}">
+    <input type="submit" value="Publishers management">
+</form>
+<br>
+<form th:action="@{/admin/platforms}">
+    <input type="submit" value="Platforms management">
+</form>
+<br>
+<form th:action="@{/}">
+    <input type="submit" value="Back">
+</form>
+
+
+</body>
+</html>

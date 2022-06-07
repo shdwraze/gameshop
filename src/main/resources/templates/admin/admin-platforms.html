@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>PLATFORMS</title>
+</head>
+<body>
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>NAME</th>
+    </tr>
+    <tr th:each="platform : ${platforms}">
+        <td th:text="${platform.id}"></td>
+        <td th:text="${platform.name}"></td>
+    </tr>
+</table>
+<br>
+<form th:action="@{/admin/platforms}" th:object="${platform}" method="post">
+    <label>Name: </label>
+    <input type="text" th:field="*{name}">
+    <input type="submit" value="Create new plaftorm">
+</form>
+
+</body>
+</html>
