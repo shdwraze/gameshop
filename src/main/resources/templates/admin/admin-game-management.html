@@ -36,9 +36,17 @@
                 <form th:action="@{/admin/games/edit/{id}(id=${game.id})}" method="get">
                     <input type="submit" value="EDIT">
                 </form>
-                <br>
                 <form th:action="@{/admin/games/delete/{id}(id=${game.id})}" method="post">
-                    <input type="submit" value="DELETE">
+                    <input th:if="${#lists.size(game.orders) > 0}"
+                           type="submit" value="DELETE" disabled>
+                    <input th:if="${#lists.size(game.orders) <= 0}"
+                           type="submit" value="DELETE">
+                </form>
+                <form th:action="@{/admin/games/archive/{id}(id=${game.id})}" method="post">
+                    <input th:if="${game.available.name() == 'AVAILABLE'}"
+                           type="submit" value="ARCHIVE">
+                    <input th:if="${game.available.name() == 'ARCHIVE'}"
+                           type="submit" value="UNARCHIVE">
                 </form>
             </td>
         </tr>

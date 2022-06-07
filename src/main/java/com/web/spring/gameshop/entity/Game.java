@@ -68,6 +68,9 @@ public class Game {
             inverseJoinColumns = @JoinColumn(name = "order_id"))
     private List<Order> orders;
 
+    @Enumerated(EnumType.STRING)
+    private Available available;
+
     public Game(String name, Date release, String description, int price) {
         this.name = name;
         this.release = release;

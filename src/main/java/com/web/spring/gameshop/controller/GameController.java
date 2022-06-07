@@ -1,18 +1,13 @@
 package com.web.spring.gameshop.controller;
 
-import com.web.spring.gameshop.entity.Game;
-import com.web.spring.gameshop.entity.Order;
-import com.web.spring.gameshop.entity.Status;
-import com.web.spring.gameshop.entity.User;
+import com.web.spring.gameshop.entity.*;
 import com.web.spring.gameshop.repository.GameRepository;
+import com.web.spring.gameshop.repository.GenresRepository;
 import com.web.spring.gameshop.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -25,11 +20,21 @@ public class GameController {
     private UserRepository userRepository;
     @Autowired
     private GameRepository gameRepository;
+    @Autowired
+    private GenresRepository genresRepository;
 
     @GetMapping({"", "/"})
-    public String getAllGames(Model model) {
-        List<Game> games = gameRepository.findAll();
+    public String getAllGames(Model model,
+                              @RequestParam(name = "selectGenre", required = false) String name) {
+        List<Game> games;
+        if (name != null) {
+            games = gameRepository.findAllByGenres(genresRepository.findByName(name));
+        } else {
+            games = gameRepository.findAll();
+        }
+        List<Genre> genres = genresRepository.findAll();
         model.addAttribute("games", games);
+        model.addAttribute("genres", genres);
 
         return "games";
     }

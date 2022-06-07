@@ -128,8 +128,22 @@ public class AdminController {
         game.setGenres(genres);
         game.setPlatforms(platforms);
         game.setSystemRequirements(requirements);
+        game.setAvailable(Available.AVAILABLE);
         requirements.setGame(game);
 
+        gameRepository.save(game);
+
+        return "redirect:/admin/games";
+    }
+
+    @PostMapping("/games/archive/{id}")
+    public String archiveGame(@PathVariable int id) {
+        Game game = gameRepository.findById(id);
+        if (game.getAvailable() == Available.AVAILABLE) {
+            game.setAvailable(Available.ARCHIVE);
+        } else {
+            game.setAvailable(Available.AVAILABLE);
+        }
         gameRepository.save(game);
 
         return "redirect:/admin/games";
