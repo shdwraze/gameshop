@@ -11,7 +11,7 @@
 <h1>Games</h1>
 
 <form th:action="@{/games}" method="get">
-    <select id="selectGenre" name="selectGenre">
+    <select id="genre" name="genre">
         <option value="">Select genre</option>
         <option th:each="genre : ${genres}"
                 th:value="${genre.name}"

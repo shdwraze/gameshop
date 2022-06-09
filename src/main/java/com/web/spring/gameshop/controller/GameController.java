@@ -25,9 +25,9 @@ public class GameController {
 
     @GetMapping({"", "/"})
     public String getAllGames(Model model,
-                              @RequestParam(name = "selectGenre", required = false) String name) {
+                              @RequestParam(name = "genre", required = false) String name) {
         List<Game> games;
-        if (name != null) {
+        if (name != null && name.length() > 0) {
             games = gameRepository.findAllByGenres(genresRepository.findByName(name));
         } else {
             games = gameRepository.findAll();
