@@ -10,12 +10,22 @@
 
 <h1>Games</h1>
 
+<form th:action="@{/games}" method="get">
+    <select id="genre" name="genre">
+        <option value="">Select genre</option>
+        <option th:each="genre : ${genres}"
+                th:value="${genre.name}"
+                th:text="${genre.name}"></option>
+    </select>
+    <input type="submit" value="Search">
+</form>
+<br>
 <table>
     <tr>
         <th>Name</th>
         <th>Price</th>
     </tr>
-    <tr th:each="game : ${games}">
+    <tr th:each="game : ${games}" th:if="${game.available.name() == 'AVAILABLE'}">
         <td>
             <a th:href="@{/games/{id}(id=${game.id})}" th:text="*{game.name}"></a>
         </td>
