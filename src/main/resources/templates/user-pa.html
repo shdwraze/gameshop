@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Personal Area</title>
+
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+<header class="header">
+    <div th:insert="blocks/navbar"></div>
+</header>
+
+<main class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col col-lg-3" th:insert="blocks/sidebar"></div>
+            <div class="col">
+                <h3>Welcome, <span th:text="${user.details.name}"></span>!</h3>
+                <hr/>
+                <div class="row py-2">
+                    <div class="col col-lg-5">
+                        <b>Account information</b>
+                        <div class="divider"></div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><b>Login: </b><span th:text="${user.login}"></span></li>
+                            <li class="list-group-item"><b>Email: </b><span th:text="${user.email}"></span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row py-3">
+                    <div class="col col-lg-5">
+                        <b>Personal information</b>
+                        <div class="hr"></div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><b>Full Name: </b>
+                                <span th:text="${user.details.name}"></span> <span th:text="${user.details.surname}"></span>
+                            </li>
+                            <li class="list-group-item"><b>Age: </b>
+                                <span th:text="${user.details.age}"></span> years old</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div class="container" th:insert="blocks/footer"></div>
+
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+</body>
+</html>

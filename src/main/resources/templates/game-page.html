@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${game.name + ' - GAMEGURU'}">Title</title>
+
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+<header class="header">
+    <div th:insert="blocks/navbar"></div>
+</header>
+
+<main class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col col-lg-4">
+                <img src="/images/detroit.jpg" class="img-fluid shadow"/>
+            </div>
+            <div class="col">
+                <h3 class="fw-bold" th:text="${game.name}"></h3>
+                <div class="container py-3">
+                    <p><b>Release:</b> <span th:text="*{game.release}"></span></p>
+                    <p><b>Developer:</b> <span th:text="*{game.developer.name}"></span></p>
+                    <p><b>Publisher:</b> <span th:text="*{game.publisher.name}"></span></p>
+                    <p>
+                        <b>Genre:</b>
+                        <span th:each="genre, iterStat : ${gameGenres}"
+                              th:text="${genre.name} + ${!iterStat.last ? ', ' : ''}"></span>
+                    </p>
+                    <p>
+                        <b>Platforms:</b>
+                        <span th:each="platform, iterStat : ${gamePlatforms}"
+                              th:text="${platform.name} + ${!iterStat.last ? ', ' : ''}"></span>
+                    </p>
+                    <p><b>Description:</b> <span th:text="*{game.description}"></span></p>
+                    <p>
+                        <b>System requirements:</b>
+                    <ul>
+                        <li>Processor: <span th:text="${sys.processor}"></span></li>
+                        <li>Video card: <span th:text="${sys.videocard}"></span></li>
+                        <li>Disk space: <span th:text="${sys.diskSize}"></span> GB</li>
+                        <li>RAM size: <span th:text="${sys.ramSize}"></span> GB</li>
+                    </ul>
+                    </p>
+                    <p><b>Price:</b> <label><span th:text="*{game.price}"></span> $</label></p>
+                </div>
+                <form th:if="${isBought == false}" th:action="@{/{id}(id=${game.id})}" method="post">
+                    <input th:if="${game.available.name() == 'AVAILABLE'}"
+                           type="submit" class="btn btn-lg btn-outline-primary" value="Add to cart" />
+                    <div class="alert alert-primary d-flex align-items-center" role="alert"
+                         th:if="${game.available.name() == 'ARCHIVE'}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">
+                            <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                        </svg>
+                        <div>
+                            This game is not available for purchase because it has been archived.
+                        </div>
+                    </div>
+                </form>
+                <input th:if="${isBought == true}"
+                       type="submit" class="btn btn-lg btn-outline-primary disabled"
+                       value="You already have this game" />
+            </div>
+        </div>
+    </div>
+</main>
+
+<div class="container" th:insert="blocks/footer"></div>
+
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<nav th:fragment="nav" class="navbar navbar-expand-sm navbar-light bg-light">
+    <div class="container">
+        <a href="/" class="navbar-brand mb-0 h1">
+            <img class="d-inline-block align-top" src="/images/logo.svg" width="91" height="38">
+        </a>
+        <button type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNav"
+                class="navbar-toggler"
+                aria-controls="navbarNav"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse flex-grow-1 justify-content-center" id="navbarNav">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item active">
+                    <a href="/" class="nav-link">
+                        All games
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle"
+                       id="navbarDropdown"
+                       role="button"
+                       data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        Genres
+                    </a>
+                    <ul class="dropdown-menu"
+                        aria-labelledby="navbarDropdown">
+                        <li th:each="genre : ${genres}">
+                            <a class="dropdown-item" th:href="@{/?genre={name}(name=${genre.name})}"
+                               th:text="${genre.name}"></a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="d-flex align-items-center">
+            <!--            <input type="text" class="form-control me-2">-->
+            <!--            <button type="submit" class="btn btn-outline-dark me-2">Search</button>-->
+            <form class="me-2" role="search">
+                <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
+            </form>
+            <div sec:authorize="isAnonymous()">
+                <form th:action="@{/login}" method="get">
+                    <input type="submit" class="btn btn-outline-primary active" value="Sign In">
+                </form>
+            </div>
+            <div class="dropdown" sec:authorize="isAuthenticated()">
+                <a href="#" class="dropdown-toggle d-flex align-items-center hidden-arrow"
+                   id="dropdownUser1"
+                   role="button"
+                   data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="/images/user.svg"
+                         alt="mdo" width="32" height="32" class="rounded-circle"
+                         loading="lazy">
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end"
+                    aria-labelledby="dropdownUser1">
+                    <li><a class="dropdown-item" th:href="@{/info}">Personal area</a></li>
+                    <li><a class="dropdown-item" th:href="@{/info/edit}">Settings</a></li>
+                    <li><a class="dropdown-item" th:href="@{/admin}"
+                           sec:authorize="hasAuthority('ADMIN')">Admin panel</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item" th:href="@{/logout}">Sign out</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>

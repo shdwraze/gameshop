@@ -30,13 +30,14 @@
                         Looking for where you can buy a new product at a low price?
                         On GameGuru, games that have just been released are sold cheaper than in the developer's stores!
                     </p>
-                    <button type="button" class="btn btn-outline-light button-margin">Go to store</button>
+                    <button type="button" class="btn btn-outline-light button-margin"
+                            onClick="document.getElementById('content').scrollIntoView();">Go to store</button>
                 </div>
             </div>
         </div>
     </section>
 
-    <div class="container py-5">
+    <div class="container py-5" id="content">
         <div class="text-center fs-4 fw-bold">
             <p>Catalog</p>
         </div>
@@ -44,7 +45,7 @@
         <div class="container py-5">
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3">
                 <div class="col" th:each="game : ${games}" th:if="${game.available.name() == 'AVAILABLE'}">
-                    <div class="card shadow bg-white rounded">
+                    <div class="card shadow bg-light rounded">
                         <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
                             <img src="/images/detroit.jpg" class="img-fluid rounded"/>
                             <a href="#!">
@@ -53,7 +54,7 @@
                         </div>
 
                         <div class="card-body">
-                            <p><span class="badge bg-secondary me-1"
+                            <p><span class="badge bg-primary me-1"
                                      th:each="platform : ${game.platforms}"
                                      th:text="${platform.name}">Platform</span>
                             </p>
@@ -73,25 +74,8 @@
     </div>
 </main>
 
-<div class="container">
-    <footer class="py-3 my-4 border-top">
-        <div class="text-center">
-            <span class="mb-3 mb-md-0 text-muted">&copy; 2022 Designed by
-            <a class="text-decoration-none"
-               href="https://github.com/shdwraze">shdwraze</a>
-            </span>
-        </div>
-    </footer>
-</div>
+<div class="container" th:insert="blocks/footer"></div>
 
-<!--<div class="container">-->
-<!--    <footer class="py-3 my-4">-->
-<!--        <p class="text-center text-muted">&copy; 2022 Designed by-->
-<!--            <a class="text-decoration-none fw-bold"-->
-<!--               href="https://github.com/shdwraze">shdwraze</a>-->
-<!--        </p>-->
-<!--    </footer>-->
-<!--</div>-->
 <!-- JavaScript Bundle with Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"

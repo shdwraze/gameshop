@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping("/games")
+//@RequestMapping("/games")
 public class GameController {
     @Autowired
     private UserRepository userRepository;
@@ -41,6 +41,7 @@ public class GameController {
 
     @GetMapping("/{id}")
     public String getGameInfo(@PathVariable int id, Model model, Principal principal) {
+        List<Genre> genres = genresRepository.findAll();
         Game game = gameRepository.findById(id);
 
         if (principal != null) {
@@ -69,8 +70,9 @@ public class GameController {
         model.addAttribute("gameGenres", game.getGenres());
         model.addAttribute("gamePlatforms", game.getPlatforms());
         model.addAttribute("sys", game.getSystemRequirements());
+        model.addAttribute("genres", genres);
 
-        return "game-info";
+        return "game-page";
     }
 
     @PostMapping("/{id}")
