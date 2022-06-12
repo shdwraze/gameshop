@@ -19,6 +19,12 @@
     </select>
     <input type="submit" value="Search">
 </form>
+
+<div>
+    <a th:each="genre : ${genres}" th:href="@{/games?genre={name}(name=${genre.name})}"
+       th:text="${genre.name}"></a>
+</div>
+
 <br>
 <table>
     <tr>

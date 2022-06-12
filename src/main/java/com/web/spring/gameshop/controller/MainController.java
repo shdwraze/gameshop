@@ -1,6 +1,8 @@
 package com.web.spring.gameshop.controller;
 
 import com.web.spring.gameshop.entity.*;
+import com.web.spring.gameshop.repository.GameRepository;
+import com.web.spring.gameshop.repository.GenresRepository;
 import com.web.spring.gameshop.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 import java.util.List;
@@ -19,11 +22,37 @@ public class MainController {
     private UserRepository userRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private GenresRepository genresRepository;
+    @Autowired
+    private GameRepository gameRepository;
 
-    @GetMapping({"/", ""})
-    public String index() {
+//    @GetMapping({"/", ""})
+//    public String index(Model model) {
+//        List<Genre> genres = genresRepository.findAll();
+//        List<Game> games = gameRepository.findAll();
+//        model.addAttribute("genres", genres);
+//        model.addAttribute("games", games);
+//
+//        return "index";
+//    }
+
+    @GetMapping({"", "/"})
+    public String index(Model model,
+                              @RequestParam(name = "genre", required = false) String name) {
+        List<Game> games;
+        if (name != null && name.length() > 0) {
+            games = gameRepository.findAllByGenres(genresRepository.findByName(name));
+        } else {
+            games = gameRepository.findAll();
+        }
+        List<Genre> genres = genresRepository.findAll();
+        model.addAttribute("games", games);
+        model.addAttribute("genres", genres);
+
         return "index";
     }
+
 
     @GetMapping("/login")
     public String login() {

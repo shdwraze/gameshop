@@ -23,49 +23,52 @@ public class GameController {
     @Autowired
     private GenresRepository genresRepository;
 
-    @GetMapping({"", "/"})
-    public String getAllGames(Model model,
-                              @RequestParam(name = "genre", required = false) String name) {
-        List<Game> games;
-        if (name != null && name.length() > 0) {
-            games = gameRepository.findAllByGenres(genresRepository.findByName(name));
-        } else {
-            games = gameRepository.findAll();
-        }
-        List<Genre> genres = genresRepository.findAll();
-        model.addAttribute("games", games);
-        model.addAttribute("genres", genres);
-
-        return "games";
-    }
+//    @GetMapping({"", "/"})
+//    public String getAllGames(Model model,
+//                              @RequestParam(name = "genre", required = false) String name) {
+//        List<Game> games;
+//        if (name != null && name.length() > 0) {
+//            games = gameRepository.findAllByGenres(genresRepository.findByName(name));
+//        } else {
+//            games = gameRepository.findAll();
+//        }
+//        List<Genre> genres = genresRepository.findAll();
+//        model.addAttribute("games", games);
+//        model.addAttribute("genres", genres);
+//
+//        return "games";
+//    }
 
     @GetMapping("/{id}")
     public String getGameInfo(@PathVariable int id, Model model, Principal principal) {
         Game game = gameRepository.findById(id);
-        User user = userRepository.findByLogin(principal.getName());
-        List<Order> orders = user.getOrders();
 
-        boolean isBought = false;
-        for (Order order : orders) {
-            List<Game> games = order.getGames();
+        if (principal != null) {
+            User user = userRepository.findByLogin(principal.getName());
+            List<Order> orders = user.getOrders();
 
-            for (Game currentGame : games) {
-                if (game == currentGame) {
-                    isBought = true;
+            boolean isBought = false;
+            for (Order order : orders) {
+                List<Game> games = order.getGames();
+
+                for (Game currentGame : games) {
+                    if (game == currentGame) {
+                        isBought = true;
+                        break;
+                    }
+                }
+
+                if (isBought) {
                     break;
                 }
             }
-
-            if (isBought) {
-                break;
-            }
+            model.addAttribute("isBought", isBought);
         }
 
         model.addAttribute("game", game);
         model.addAttribute("gameGenres", game.getGenres());
         model.addAttribute("gamePlatforms", game.getPlatforms());
         model.addAttribute("sys", game.getSystemRequirements());
-        model.addAttribute("isBought", isBought);
 
         return "game-info";
     }
