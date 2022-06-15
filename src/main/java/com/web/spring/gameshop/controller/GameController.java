@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-//@RequestMapping("/games")
 public class GameController {
     @Autowired
     private UserRepository userRepository;
@@ -22,22 +21,6 @@ public class GameController {
     private GameRepository gameRepository;
     @Autowired
     private GenresRepository genresRepository;
-
-//    @GetMapping({"", "/"})
-//    public String getAllGames(Model model,
-//                              @RequestParam(name = "genre", required = false) String name) {
-//        List<Game> games;
-//        if (name != null && name.length() > 0) {
-//            games = gameRepository.findAllByGenres(genresRepository.findByName(name));
-//        } else {
-//            games = gameRepository.findAll();
-//        }
-//        List<Genre> genres = genresRepository.findAll();
-//        model.addAttribute("games", games);
-//        model.addAttribute("genres", genres);
-//
-//        return "games";
-//    }
 
     @GetMapping("/{id}")
     public String getGameInfo(@PathVariable int id, Model model, Principal principal) {
@@ -109,7 +92,7 @@ public class GameController {
 
         userRepository.save(user);
 
-        return "redirect:/info";
+        return "redirect:/{id}";
     }
 
 }

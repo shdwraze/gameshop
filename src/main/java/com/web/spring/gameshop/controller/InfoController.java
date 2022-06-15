@@ -34,25 +34,9 @@ public class InfoController {
     public String getUserInfo(Principal principal, Model model) {
         User user = userRepository.findByLogin(principal.getName());
         Details details = user.getDetails();
-        List<Order> orders = user.getOrders();
-        int sum = 0;
-
-        if (!orders.isEmpty()) {
-            Order order = orders.get(orders.size() - 1);
-
-            if (order.getStatus() == Status.NOT_PAID) {
-                List<Game> games = order.getGames();
-
-                for (Game game : games) {
-                    sum += game.getPrice();
-                }
-            }
-        }
 
         model.addAttribute("userInfo", details);
         model.addAttribute("user", user);
-        model.addAttribute("userOrders", orders);
-        model.addAttribute("sum", sum);
 
         return "user-pa";
     }
@@ -68,7 +52,7 @@ public class InfoController {
     }
 
     @PostMapping("/edit")
-    public String updateUser(Principal principal, Details details, User user, BindingResult result) {
+    public String updateUser(Principal principal, User user, BindingResult result) {
         User u = userRepository.findByLogin(principal.getName());
 
         if (!user.getPassword().equals("")) {
