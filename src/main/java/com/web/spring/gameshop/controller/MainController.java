@@ -27,16 +27,6 @@ public class MainController {
     @Autowired
     private GameRepository gameRepository;
 
-//    @GetMapping({"/", ""})
-//    public String index(Model model) {
-//        List<Genre> genres = genresRepository.findAll();
-//        List<Game> games = gameRepository.findAll();
-//        model.addAttribute("genres", genres);
-//        model.addAttribute("games", games);
-//
-//        return "index";
-//    }
-
     @GetMapping({"", "/"})
     public String index(Model model,
                               @RequestParam(name = "genre", required = false) String name) {
