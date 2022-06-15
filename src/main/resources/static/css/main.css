@@ -1,0 +1,27 @@
+.button-margin {
+    margin-top: 15px;
+}
+
+.center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.game-section {
+    margin-top: 35px;
+}
+
+.btn-lg:hover {
+    background-color: #0d6efd;
+    color: white;
+    cursor: pointer;
+}
+
+.btn-hover:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.btn-hover {
+    box-shadow: none !important;
+}

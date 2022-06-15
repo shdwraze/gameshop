@@ -71,6 +71,8 @@ public class Game {
     @Enumerated(EnumType.STRING)
     private Available available;
 
+    private String cover;
+
     public Game(String name, Date release, String description, int price) {
         this.name = name;
         this.release = release;
