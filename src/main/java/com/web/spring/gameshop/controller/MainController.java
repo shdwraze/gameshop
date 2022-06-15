@@ -66,7 +66,7 @@ public class MainController {
         userModel.addAttribute("user", user);
         userDetailsModel.addAttribute("userDetails", details);
 
-        return "register";
+        return "reg";
     }
 
     @PostMapping("/register")
@@ -105,6 +105,6 @@ public class MainController {
         order.setStatus(Status.PAID);
         userRepository.save(user);
 
-        return "redirect:/info";
+        return "redirect:/info/basket";
     }
 }

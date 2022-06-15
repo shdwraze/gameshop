@@ -16,3 +16,12 @@
     color: white;
     cursor: pointer;
 }
+
+.btn-hover:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.btn-hover {
+    box-shadow: none !important;
+}

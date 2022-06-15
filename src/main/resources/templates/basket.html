@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Basket</title>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+<header class="header">
+    <div th:insert="blocks/navbar"></div>
+</header>
+
+<main class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col col-lg-3" th:insert="blocks/sidebar"></div>
+            <div class="col">
+                <table th:if="${basket != null}"
+                       class="table align-middle mb-0 bg-white">
+                    <thead class="bg-light">
+                    <tr>
+                        <th>№</th>
+                        <th>Content</th>
+                        <th>Amount payable</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td th:text="${basket.id}"></td>
+                        <td>
+                            <span th:each="game : ${basket.games}">
+                                <form th:action="@{/info/delete/{id}(id=${game.id})}" method="post">
+                                    <span th:text="${game.name}"></span>
+                                    <button type="submit" class="btn btn-default btn-hover">
+                                        <img src="/images/trash.svg" width="16"/>
+                                    </button>
+                                </form>
+                            </span>
+                        </td>
+                        <td>
+                            <span><span th:text="${sum}"></span> $</span>
+                        </td>
+                        <td>
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                Pay
+                            </button>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Payment</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                                <strong>Check the data!</strong> You will not be able to return the money in case of incorrect data.
+                                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                            </div>
+                                            <p><b>Order №: </b><label th:text="${basket.id}"></label></p>
+                                            <p><b>Your login: </b><label th:text="${basket.user.login}"></label></p>
+                                            <p><b>Your name: </b><label th:text="${basket.user.details.name + ' '
+                                            + basket.user.details.surname}"></label></p>
+                                            <p><b>Content: </b>
+                                                <ul th:each="game : ${basket.games}">
+                                                    <li th:text="${game.name}"></li>
+                                                </ul>
+                                            </p>
+                                            <p><b>Amount payable: </b><label th:text="${sum}"></label> $</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <form th:action="@{/pay}" method="post">
+                                                <button type="submit" class="btn btn-primary">Confirm payment</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div th:if="${basket == null}"
+                     class="alert alert-warning" role="alert">
+                    Basket is empty!
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+<div class="container" th:insert="blocks/footer"></div>
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+</body>
+</html>

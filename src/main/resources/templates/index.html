@@ -44,10 +44,10 @@
 
         <div class="container py-5">
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3">
-                <div class="col" th:each="game : ${games}" th:if="${game.available.name() == 'AVAILABLE'}">
+                <div class="col d-flex justify-content-center" th:each="game : ${games}" th:if="${game.available.name() == 'AVAILABLE'}">
                     <div class="card shadow bg-light rounded">
                         <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-                            <img src="/images/detroit.jpg" class="img-fluid rounded"/>
+                            <img th:src="${game.cover}" style="width: 304px; height: 378px" class="img-fluid rounded"/>
                             <a href="#!">
                                 <div class="mask" style="background-color: rgba(251, 251, 251, 0.15)"></div>
                             </a>

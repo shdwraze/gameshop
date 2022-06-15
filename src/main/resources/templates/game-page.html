@@ -20,7 +20,7 @@
     <div class="container">
         <div class="row">
             <div class="col col-lg-4">
-                <img src="/images/detroit.jpg" class="img-fluid shadow"/>
+                <img th:src="${game.cover}" class="img-fluid shadow"/>
             </div>
             <div class="col">
                 <h3 class="fw-bold" th:text="${game.name}"></h3>

@@ -110,6 +110,52 @@ public class InfoController {
 
         userRepository.save(user);
 
-        return "redirect:/info";
+        return "redirect:/info/basket";
+    }
+
+    @GetMapping("/history")
+    public String showPurchaseHistory(Principal principal, Model model) {
+        if (principal != null) {
+            List<Order> orders = userRepository.findByLogin(principal.getName()).getOrders();
+            if (!orders.isEmpty()) {
+
+                if (orders.get(orders.size() - 1).getStatus() == Status.NOT_PAID) {
+                    orders.remove(orders.get(orders.size() - 1));
+                }
+
+                model.addAttribute("orders", orders);
+            } else {
+                model.addAttribute("orders", null);
+            }
+        }
+
+        return "purchase-history";
+    }
+
+    @GetMapping("/basket")
+    public String showBasket(Principal principal, Model model) {
+        if (principal != null) {
+            List<Order> orders = userRepository.findByLogin(principal.getName()).getOrders();
+            Order order = null;
+            if (!orders.isEmpty()) {
+                order = orders.get(orders.size() - 1);
+            }
+
+            if (order != null && order.getStatus() != Status.PAID) {
+                int sum = 0;
+                List<Game> games = order.getGames();
+
+                for (Game game : games) {
+                    sum += game.getPrice();
+                }
+
+                model.addAttribute("sum", sum);
+                model.addAttribute("basket", order);
+            } else {
+                model.addAttribute("basket", null);
+            }
+        }
+
+        return "basket";
     }
 }
