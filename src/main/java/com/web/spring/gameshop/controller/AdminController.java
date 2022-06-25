@@ -78,6 +78,7 @@ public class AdminController {
         g.setPlatforms(game.getPlatforms());
         g.setDeveloper(developer);
         g.setPublisher(publisher);
+        g.setCover(game.getCover());
 
         g.getSystemRequirements().setProcessor(requirements.getProcessor());
         g.getSystemRequirements().setVideocard(requirements.getVideocard());

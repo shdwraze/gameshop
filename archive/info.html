@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>User Information</title>
+</head>
+<body>
+
+<div th:object="${user}">
+    <h1>User Information</h1>
+
+    <div>
+        <p>Login: <span th:text="${user.login}"></span></p>
+        <p>Email: <span th:text="${user.email}"></span></p>
+    </div>
+
+    <div th:object="${userInfo}">
+        <p>Name: <span th:text="${userInfo.name}"></span></p>
+        <p>Surname: <span th:text="${userInfo.surname}"></span></p>
+        <p>Age: <span th:text="${userInfo.age}"></span></p>
+    </div>
+
+    <div>
+        <form th:action="@{/info/edit}" method="get">
+            <input type="submit" value="Edit">
+        </form>
+    </div>
+    <br>
+
+    <div>
+        <table border="1">
+            <tr>
+                <th>№ order</th>
+                <th>Content</th>
+                <th>Status</th>
+            </tr>
+            <tr th:each="order : ${userOrders}">
+                <td th:text="${order.id}"></td>
+                <td>
+                    <span th:each="game : ${order.games}">
+                        <span th:text="${game.name}"></span>
+                        <form th:if="${order.status.name() == 'NOT_PAID'}"
+                              th:action="@{/info/delete/{id}(id=${game.id})}" method="post">
+                            <input type="submit" value="Delete">
+                        </form>
+                        <br>
+                    </span>
+                </td>
+                <td align="center">
+                    <span th:if="${order.status.name() == 'PAID'}">Paid</span>
+                    <span th:if="${order.status.name() == 'NOT_PAID'}">
+                        Not paid
+                        <br>
+                        Amount payable: <label th:text="${sum}"></label>
+                        <form th:action="@{/pay}" method="get">
+                            <input type="submit" value="Pay">
+                        </form>
+                    </span>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <br>
+    <div>
+        <form th:action="@{/}">
+            <input type="submit" value="Back">
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
